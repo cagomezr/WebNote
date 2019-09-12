@@ -1,10 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>WebNote | Github Project</title>
+	<script src="https://unpkg.com/filer/dist/filer.min.js"></script>
+	<script>
+		const fs = new Filer.FileSystem();
+		let notepad = "";
+		window.addEventListener('DOMContentLoaded', (event) => {
+			console.log('DOM fully loaded and parsed');
+			fs.readFile('/note', 'utf8', function(err, data) {
+				try {
+					if (err) {
+						throw err;
+					}
+					notepad = data;
+				} catch (err) {
+					alert(err);
+					console.log(err);
+				}finally{
+					notepad = "Welcome to my Notepad";
+					document.getElementById('note').innerHTML = notepad;
+				}
+			});
+			var div = document.getElementById('note');
+			div.innerHTML = notepad;
+		});
+		let nIntervId = setInterval(saveText, 30000);
+
+		function saveText() {
+			divconttent = document.getElementById('note').innerHTML;
+			fs.writeFile('/note', divconttent);
+		}
+	</script>
 </head>
+
 <body>
-	
+	<div id="note" contenteditable>
+
+	</div>
 </body>
+
 </html>
